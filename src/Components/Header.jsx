@@ -2,8 +2,6 @@ import { ShoppingBag, Search, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
-import { Menu, X } from 'lucide-react';
 const categories = [
   { name: 'Clothing', path: '/category/clothing' },
   { name: 'Shoes', path: '/category/shoes' },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pencil, Trash, ChevronRight, ChevronLeft } from "lucide-react";
+import {  ChevronRight, ChevronLeft } from "lucide-react";
 import SellProduct from "../SellProduct";
 
 const Product = () => {

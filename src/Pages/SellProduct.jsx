@@ -164,6 +164,7 @@ const SellProduct = ({ onClose }) => {
               <option value="Shoes">Shoes</option>
               <option value="Jewelries">Jewelries</option>
               <option value="Arts">Arts</option>
+              <option value="Beauty"> Bath & Beauty</option>
             </select>
           </div>
           <div className="mb-4">

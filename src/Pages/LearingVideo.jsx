@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import VideoCard from "../Components/VideoCard";
-import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 const LearningPage = () => {
   const [videos, setVideos] = useState([]);
@@ -9,7 +8,7 @@ const LearningPage = () => {
   const videosPerPage = 8;
 
   useEffect(() => {
-    fetch("public/videos.json") 
+    fetch(`${import.meta.env.BASE_URL}videos.json`) 
       .then((res) => res.json())
       .then((data) => {
         setVideos(data);

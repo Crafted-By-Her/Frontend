@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Github } from "lucide-react";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 
 const Footer = () => {
@@ -85,14 +84,6 @@ const Footer = () => {
             className="w-9 h-9 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white hover:opacity-90 transition duration-300"
           >
             <Instagram size={20} />
-          </a>
-          <a
-            href="https://github.com/craftedbyher"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 text-white hover:opacity-90 transition duration-300"
-          >
-            <Github size={20} />
           </a>
         </div>
       </div>

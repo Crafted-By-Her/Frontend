@@ -49,7 +49,6 @@ const Sidebar = () => {
   const role = user?.role?.toLowerCase();
 
   const getMenuItems = () => {
-    // Default to admin menu if role is missing
     const userRole = user?.role?.toLowerCase() || 'admin';
     
     if (userRole === 'superadmin') {
@@ -100,7 +99,6 @@ const Sidebar = () => {
   const getInitials = (firstName, lastName) => {
     return `${firstName?.[0] || ""}${lastName?.[0] || ""}`.toUpperCase();
   };
-  //const menuItems = role === "superadmin" ? superAdminMenu : adminMenu;
 
   return (
     <>

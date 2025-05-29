@@ -6,7 +6,7 @@ const VideoList = () => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
-    fetch('public/videos.json') 
+    fetch(`${import.meta.env.BASE_URL}videos.json`) 
       .then((res) => res.json())
       .then((data) => {
         setVideos(data.slice(0, 4)); 

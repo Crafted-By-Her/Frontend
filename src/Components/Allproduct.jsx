@@ -22,7 +22,6 @@ const AllProduct = () => {
         const data = await res.json();
         const productsData = Array.isArray(data.data) ? data.data : [];
         setProducts(productsData);
-       // console.log("Fetched data:", productsData);
       } catch (err) {
         setError(err.message);
       }
