@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Facebook, Twitter, Instagram, Github } from "lucide-react";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
 
 const Footer = () => {
