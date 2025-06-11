@@ -3,7 +3,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 
 const ReviewCard = ({ reviewer }) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-xl">
       <div className="flex items-center gap-3 mb-3">
         <img
           src={reviewer.profilePic}

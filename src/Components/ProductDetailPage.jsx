@@ -10,11 +10,13 @@ import ReviewCard from "./ReviewCard";
 import RateReview from "../Components/RateReview";
 import NotFound from "../Components/NotFound";
 import SellerContactInfo from "../Components/SellerContactInfo";
+import ProductCard from "../Components/ProductCard";
 
 const ProductDetailPage = () => {
   const { categoryName, productId } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [notFound, setNotFound] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -22,8 +24,9 @@ const ProductDetailPage = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [showSellerModal, setShowSellerModal] = useState(false);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const apiUrl = `${import.meta.env.VITE_API_BASE_URL}`;
+
   useEffect(() => {
     const storedUser =
       JSON.parse(localStorage.getItem("userData")) ||
@@ -43,7 +46,7 @@ const ProductDetailPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        setLoading(true); 
+        setLoading(true);
         const res = await fetch(
           `${apiUrl}/api/products?category=${categoryName}`
         );
@@ -56,6 +59,10 @@ const ProductDetailPage = () => {
         if (foundProduct) {
           setProduct(foundProduct);
           setReviews(foundProduct.ratings || []);
+          const related = data.data
+            .filter((p) => p._id !== productId)
+            .slice(0, 4);
+          setRelatedProducts(related);
         } else {
           setNotFound(true);
         }
@@ -63,7 +70,7 @@ const ProductDetailPage = () => {
         console.error("Error fetching product:", err);
         setNotFound(true);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -89,27 +96,35 @@ const ProductDetailPage = () => {
       ratings: [...(prevProduct.ratings || []), newReview],
     }));
   };
-
+  const handleReview = () => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      setShowPopup(true)
+    }
+  };
   const handleContactSeller = () => {
     if (!user) {
       navigate("/login");
     } else {
       setShowSellerModal(true);
     }
-  };
+  }; 
 
   if (loading) {
-    return <div className="text-center mt-10">Loading...</div>; 
+    return <div className="text-center mt-10">Loading...</div>;
   }
 
   if (notFound || !product) {
-    return <NotFound />; 
+    return <NotFound />;
   }
+
   const averageRating =
     reviews.reduce((sum, r) => sum + r.score, 0) / (reviews.length || 1) || 0;
 
   const sellerName =
     product.userId?.name || product.userId?.email?.split("@")[0] || "Seller";
+
   return (
     <>
       <div className="container mx-auto px-10 py-7">
@@ -231,35 +246,37 @@ const ProductDetailPage = () => {
 
         <div className="border-y-2 flex flex-col">
           <h3 className="text-gray-900 font-semibold text-xl mt-4 px-5">
-          {product?.userId?.firstName} {product?.userId?.lastName} has {reviews.length} reviews
+            {product?.userId?.firstName} {product?.userId?.lastName} has{" "}
+            {reviews.length} reviews
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-2 py-4">
-  {reviews.map((review, index) => (
-    <ReviewCard
-      key={review._id || index}
-      reviewer={{
-        name: review.fullName,
-        rating: review.score,
-        comment: review.comment,
-        date: new Date(review.createdAt).toLocaleDateString(),
-        profilePic: review.userId?.profilePic ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            review.fullName
-          )}&background=random`, 
-      }}
-    />
-  ))}
-</div>
+            {reviews.map((review, index) => (
+              <ReviewCard
+                key={review._id || index}
+                reviewer={{
+                  name: review.fullName,
+                  rating: review.score,
+                  comment: review.comment,
+                  date: new Date(review.createdAt).toLocaleDateString(),
+                  profilePic:
+                    review.userId?.profilePic ||
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                      review.fullName
+                    )}&background=random`,
+                }}
+              />
+            ))}
+          </div>
           <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:gap-6 mb-4">
+            
             <button
-              onClick={() => setShowPopup(true)}
+              onClick={handleReview} 
               className="mx-auto px-6 py-2 text-sm border border-gray-900 text-gray-900 rounded font-semibold transition duration-150"
             >
               Rate & Review
             </button>
           </div>
-
           {showPopup && (
             <RateReview
               user={user}
@@ -271,6 +288,42 @@ const ProductDetailPage = () => {
           )}
         </div>
       </div>
+      {relatedProducts.length > 0 && (
+        <div className="mt-8 px-10">
+          <h3 className="text-gray-900 font-semibold text-xl mb-4">
+            Related Products
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
+            {relatedProducts.map((relatedProduct) => (
+              <div className="mb-5" key={relatedProduct._id || Math.random()}>
+                <ProductCard
+                  title={relatedProduct.title || "Untitled Product"}
+                  description={
+                    relatedProduct.description || "No description available"
+                  }
+                  price={relatedProduct.price || "0"}
+                  images={
+                    Array.isArray(relatedProduct.images) &&
+                    relatedProduct.images.length > 0
+                      ? relatedProduct.images
+                      : ["/placeholder.jpg"]
+                  }
+                  averageRating={
+                    relatedProduct.ratings?.length
+                      ? relatedProduct.ratings.reduce(
+                          (sum, r) => sum + r.score,
+                          0
+                        ) / relatedProduct.ratings.length
+                      : 0
+                  }
+                  id={relatedProduct._id}
+                  category={relatedProduct.category || categoryName}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <Footer />
       {showSellerModal && (
         <SellerContactInfo

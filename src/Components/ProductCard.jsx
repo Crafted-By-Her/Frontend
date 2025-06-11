@@ -20,7 +20,7 @@ const ProductCard = ({ title, description, price, images, averageRating, id , ca
         </Link>
       </div>
       <div className="p-4 flex flex-col flex-grow">
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-between items-center gap-2">
           <h3 className="text-lg text-gray-800 font-semibold truncate">{title}</h3>
           <div className="flex items-center gap-1 text-gray-800 text-sm">
             <Star size={16} fill="currentColor" className="text-orange-500" />
@@ -28,7 +28,7 @@ const ProductCard = ({ title, description, price, images, averageRating, id , ca
           </div>
         </div>
         <p className="text-gray-600 text-sm line-clamp-2 flex-grow">{description}</p>
-        <p className="text-lg text-gray-800 font-bold mt-1">{price} ETB</p>
+        <p className="text-lg text-gray-800 font-bold ">{price} ETB</p>
       </div>
     </div>
   );
